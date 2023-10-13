@@ -1,0 +1,73 @@
+:root {
+  --background: 0,0%,100%;
+  --foreground: 222.2,47.4%,11.2%;
+  --muted: 210,40%,96.1%;
+  --muted-foreground: 215.4,16.3%,46.9%;
+  --popover: 213, 26%, 14%;
+  --popover-foreground: 222.2,47.4%,11.2%;
+  --border: 210, 20%, 98%, 0.15;
+  --input: 214.3,31.8%,91.4%;
+  --card: 0,0%,100%;
+  --card-foreground: 222.2,47.4%,11.2%;
+  --primary: 222.2,47.4%,11.2%;
+  --primary-foreground: 210,40%,98%;
+  --secondary: 210,40%,96.1%;
+  --secondary-foreground: 222.2,47.4%,11.2%;
+  --accent: 210,40%,96.1%;
+  --accent-foreground: 222.2,47.4%,11.2%;
+  --destructive: 0,100%,50%;
+  --destructive-foreground: 210,40%,98%;
+  --ring: 215,20.2%,65.1%;
+  --radius: 0.5rem;
+
+  --bg-1: #131719;
+  --bg-2: #1A222C;
+  --bg-3: #24303F;
+  --bg-4: #476A93;
+  --bg-button: #1C1C1C;
+  --bg-button-h: #212121;
+  --fg-1: #f5f5f5;
+  --fg-2: #d2d2d2;
+  --fg-3: #a1a1a1;
+  --fg-4: #707070;
+  --green: #02C076;
+  --gray: #706c81;
+  --blue: #1880E0;
+  --yellow: #F8CC36;
+  --red: #F84960;
+
+  --purple: #b88bff;
+  --purple-hover: #aa86f1;
+
+  --fi: #00D395;
+  --fi-hover: #14e1a5;
+}
+
+.dark {
+  --brand: 201.026, 100%, 46%;
+  --brand-foreground: 213,31%,91%;
+
+  --background: 224,71%,4%;
+  --foreground: 213,31%,91%;
+  --muted: 223,47%,11%;
+  --muted-foreground: 215.4,16.3%,56.9%;
+  --accent-foreground: 210,40%,98%;
+  --input: 216,34%,17%;
+  --card: 0,0%,16%;
+  --card-foreground: 213,31%,91%;
+
+  --primary: 164,100%,50%;
+  --primary-foreground: 222.2,47.4%,1.2%;
+
+  --secondary: 240,3.7%,15.9%;
+  --secondary-foreground: 0,0%,98%;
+
+  --accent: 214.29,14%,19.61%;
+  --accent-secondary: #474d57;
+  --accent-foreground: ;
+
+  --destructive: 0,63%,31%;
+  --destructive-foreground: 210,40%,98%;
+  --ring: 216,34%,17%;
+  --radius: 0.5rem;
+}
