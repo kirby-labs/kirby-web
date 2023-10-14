@@ -28,5 +28,6 @@ jobs:
           path: dist/*
           remote_path: /data/kirby-web
           remote_host: 20.212.6.4
+          remote_port: 2222
           remote_user: why
           remote_key: ${{ secrets.DEPLOY_KEY }}
