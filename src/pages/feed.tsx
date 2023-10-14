@@ -47,12 +47,12 @@ export default function () {
             <div className="text-lg text-primary font-bold mb-1">{title}</div>
             <div className="text-sm text-text1">{description}</div>
           </div>
-          <div className="text-sm text-text1 w-full border-t border-b text-left px-2 py-4 my-4">
+          <div className="text-sm text-text1 w-full border-t text-left px-2 py-4 my-1">
             <div className="flex flex-row justify-between">
               <span>Updated Time: </span>
               <span>{updatedAt}</span>
             </div>
-            <div className="flex flex-row justify-between">
+            <div className="flex flex-row justify-between mt-1">
               <span>Link: </span>
               <a href={link} className="underline">
                 {link}
@@ -60,7 +60,7 @@ export default function () {
             </div>
           </div>
           <Button type="primary" className="" onClick={() => console.log(11)}>
-            <span>Add to my RSS</span>
+            <span>Add to My Feeds</span>
           </Button>
         </div>
         <div className="flex-1 ml-10">

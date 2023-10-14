@@ -1,16 +1,17 @@
-import { AppstoreAddOutlined, UserAddOutlined } from '@ant-design/icons' // @ts-ignore
+import { AppstoreAddOutlined } from '@ant-design/icons' // @ts-ignore
 import { shorten } from '@did-network/dapp-sdk' // @ts-ignore
+import { useWallet } from '@solana/wallet-adapter-react'
 import { Button, Spin } from 'antd' // @ts-ignore
 import dayjs from 'dayjs'
 import React from 'react'
-import { useParams } from 'react-router' // @ts-ignore
 import { useNavigate } from 'react-router-dom' // @ts-ignore
 
 import { FEEDS } from '@/constants/feeds'
 import { USERS } from '@/constants/users'
 
 export default function () {
-  const { id: wallet } = useParams<{ id: string }>()
+  // const { wallet } = useWallet()
+  const { wallet } = USERS[0]
   const loading = false
   const user = USERS.find((i) => i.wallet === wallet)
   const nav = useNavigate()
@@ -58,13 +59,15 @@ export default function () {
               </div>
             </div>
           </div>
-          <Button type="primary" onClick={() => console.log(11)} className="w-full">
-            <div className="flex-center">
-              <UserAddOutlined className="mr-1" /> Subscribe
-            </div>
-          </Button>
         </div>
         <div className="flex-1 ml-10">
+          <div className="flex flex-row justify-end mb-3">
+            <Button type="primary" onClick={() => console.log(11)}>
+              <div className="flex-center">
+                <AppstoreAddOutlined className="mr-1" /> Add New Feed
+              </div>
+            </Button>
+          </div>
           <div className="px-10 mb-4 pt-5 pb-6 bg-white rounded shadow [&_a]:hover:underline">
             <div className="flex flex-row justify-between items-center mb-2">
               <div className="text-lg font-bold">Activities on Solana</div>

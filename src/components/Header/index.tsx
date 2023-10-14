@@ -1,4 +1,5 @@
 import { AppstoreOutlined, GlobalOutlined, HomeOutlined, UserOutlined } from '@ant-design/icons'
+import { useWallet } from '@solana/wallet-adapter-react'
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import React from 'react'
 import { useLocation } from 'react-router'
@@ -33,6 +34,7 @@ export function NavItem({ path, name, icon }: any) {
 }
 
 export default function () {
+  const { wallet } = useWallet()
   return (
     <div className="border-b border-divide border-solid mb-6 bg-white z-100 relative">
       <div className="px-2 max-w-6xl mx-auto w-full">
@@ -45,7 +47,7 @@ export default function () {
             <div>&nbsp;</div>
           </div>
           <div className="flex-center">
-            <NavItem path="/profile" name="Profile" icon={<UserOutlined style={{ fontSize: '18px' }} />} />
+            {wallet && <NavItem path="/profile" name="My Feeds" icon={<UserOutlined style={{ fontSize: '18px' }} />} />}
             <WalletMultiButton />
           </div>
         </div>
