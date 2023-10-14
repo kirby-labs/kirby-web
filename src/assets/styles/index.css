@@ -1,67 +1,46 @@
-@import "vars.css";
+@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;800;900&display=swap');
 
-.dark * {
-  border-color: hsl(var(--border));
-}
-
-body {
-  background-color: var(--bg-1);
-  color: hsl(var(--foreground));
-  font-family: 'Red Hat Display', sans-serif;
-  font-size: 14px;
-  /* -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale; */
+* {
+    outline: none !important;
 }
 
-body .walletconnect-modal__footer {
-  flex-wrap: wrap;
+body, html {
+    font-family: 'Red Hat Display', sans-serif;
+    scroll-behavior: smooth;
+    background: #fcfaf9;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
-@property --conic-deg {
-  syntax: '<angle>';
-  initial-value: 0deg;
-  inherits: false;
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
 }
 
-@keyframes conic {
-  from {
-    --conic-deg: 0deg;
-  }
-  to {
-    --conic-deg: 360deg;
-  }
+*,
+::before,
+::after {
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
 }
 
-.go816652413 {
-  border: 1px solid hsl(var(--border));
-  border-radius: 16px;
+.wallet-adapter-button-trigger {
+    font-size: 14px;
+    padding-left: 18px;
+    padding-right: 18px;
 }
 
-.spinner_7uc5 {
-  animation: spinner_3l8F 0.9s linear infinite;
-  animation-delay: -0.9s;
-}
-.spinner_RibN {
-  animation-delay: -0.7s;
-}
-.spinner_ZAxd {
-  animation-delay: -0.5s;
+.wallet-adapter-button {
+    height: 40px !important;
 }
 
-@keyframes spinner_3l8F {
-  0%,
-  66.66% {
-    animation-timing-function: cubic-bezier(0.14, 0.73, 0.34, 1);
-    y: 6px;
-    height: 12px;
-  }
-  33.33% {
-    animation-timing-function: cubic-bezier(0.65, 0.26, 0.82, 0.45);
-    y: 1px;
-    height: 22px;
-  }
+.wallet-adapter-button,
+.wallet-adapter-modal-wrapper {
+    font-family: inherit !important;
 }

@@ -1,6 +1,5 @@
 import react from '@vitejs/plugin-react'
 import { resolve } from 'path'
-// import legacy from '@vitejs/plugin-legacy'
 import Analyze from 'rollup-plugin-visualizer'
 import Unocss from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
@@ -9,7 +8,6 @@ import Icons from 'unplugin-icons/vite'
 import { defineConfig, loadEnv } from 'vite'
 import Checker from 'vite-plugin-checker'
 import EslintPlugin from 'vite-plugin-eslint'
-import nodePolyfills from 'vite-plugin-node-stdlib-browser'
 import Pages from 'vite-plugin-pages'
 
 export default defineConfig(({ mode }) => {
@@ -19,6 +17,7 @@ export default defineConfig(({ mode }) => {
     base: env.BASE,
     resolve: {
       alias: {
+        stream: 'stream-browserify',
         '@/': `${resolve(__dirname, 'src')}/`,
       },
     },
@@ -43,26 +42,30 @@ export default defineConfig(({ mode }) => {
             componentPrefix: 'Icon',
           }),
         ],
-        dirs: ['./src/components/ui'],
       }),
       EslintPlugin(),
       Analyze(),
-      // nodePolyfills(),
-      // legacy({
-      //   targets: ['defaults', 'not IE 11'],
-      // }),
     ],
     build: {
+      commonjsOptions: {
+        ignoreTryCatch: (id) => id !== 'stream',
+      },
       rollupOptions: {
         output: {
           manualChunks: {
             'react-vendor': ['react', 'react-router-dom', 'react-dom'],
+            'ui-vendor': ['antd'],
           },
         },
       },
     },
-    optimizeDeps: {
-      include: ['react-dom'],
+    server: {
+      proxy: {
+        '/api/': {
+          target: 'https://alpha.kirby.network/',
+          changeOrigin: true,
+        },
+      },
     },
   }
 })

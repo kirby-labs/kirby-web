@@ -1,85 +1,64 @@
-import { defineConfig, presetIcons, presetUno, presetWind, UserConfig } from 'unocss'
+import { defineConfig, presetIcons, presetWind, UserConfig } from 'unocss'
 
-import { presetShadcn } from './preset.shadcn'
+export const themeColors = {
+  transparent: 'transparent',
+  divide: '#E8EBF2',
+  white: '#ffffff',
+  primary: '#FF651E',
+  primary2: '#FFA801',
+  primary3: '#FFD98C',
+  primary4: '#FFEFD2',
+  red: '#FC5A5A',
+  red4: '#ffdbdb',
+  green: '#3DD598',
+  green4: '#cdf8c9',
+  blue4: '#c8e6ff',
+  text1: '#242F57',
+  text2: '#97A0C3',
+}
 
 const config = {
-  presets: [presetUno(), presetWind(), presetIcons(), presetShadcn()],
+  presets: [presetWind(), presetIcons()],
   shortcuts: [
     {
       'flex-center': 'flex justify-center items-center',
       'flex-col-center': 'flex flex-col justify-center items-center',
     },
   ],
-  rules: [],
-  preflights: [
-    {
-      getCSS: () => ``,
-    },
+  rules: [
+    [
+      /^text-(.*)$/,
+      ([, c], { theme }) => {
+        if (theme.colors[c]) return { color: theme.colors[c] }
+      },
+    ],
+    [
+      /^bg-(.*)$/,
+      ([, c], { theme }) => {
+        if (theme.colors[c]) return { background: theme.colors[c] }
+      },
+    ],
+    [
+      /^border-(.*)$/,
+      ([, c], { theme }) => {
+        if (theme.colors[c]) return { 'border-color': theme.colors[c] }
+      },
+    ],
   ],
   theme: {
-    colors: {
-      border: 'hsla(var(--border))',
-      input: 'hsl(var(--input))',
-      ring: 'hsl(var(--ring))',
-      background: 'hsl(var(--background))',
-      foreground: 'hsl(var(--foreground))',
-      brand: {
-        DEFAULT: 'hsl(var(--brand))',
-        foreground: 'hsl(var(--brand-foreground))',
-      },
-      primary: {
-        DEFAULT: 'hsl(var(--primary))',
-        foreground: 'hsl(var(--primary-foreground))',
-      },
-      secondary: {
-        DEFAULT: 'hsl(var(--secondary))',
-        foreground: 'hsl(var(--secondary-foreground))',
-      },
-      destructive: {
-        DEFAULT: 'hsl(var(--destructive))',
-        foreground: 'hsl(var(--destructive-foreground))',
-      },
-      muted: {
-        DEFAULT: 'hsl(var(--muted))',
-        foreground: 'hsl(var(--muted-foreground))',
-      },
-      accent: {
-        DEFAULT: 'hsl(var(--accent))',
-        foreground: 'hsl(var(--accent-foreground))',
-      },
-      popover: {
-        DEFAULT: 'hsl(var(--popover))',
-        foreground: 'hsl(var(--popover-foreground))',
-      },
-      card: {
-        DEFAULT: 'hsl(var(--card))',
-        foreground: 'hsl(var(--card-foreground))',
-      },
-      bg1: 'var(--bg-1)',
-      bg2: 'var(--bg-2)',
-      bg3: 'var(--bg-3)',
-      bg4: 'var(--bg-4)',
-      fg1: 'var(--fg-1)',
-      fg2: 'var(--fg-2)',
-      fg3: 'var(--fg-3)',
-      fg4: 'var(--fg-4)',
-
-      button: 'var(--bg-button)',
-      'button-h': 'var(--bg-button-h)',
-
-      yellow: 'var(--yellow)',
-      red: 'var(--red)',
-      gray: 'var(--gray)',
-      blue: 'var(--blue)',
-      green: 'var(--green)',
-      transparent: 'transparent',
+    colors: themeColors,
+    backgroundColor: {
+      ...themeColors,
+    },
+    borderColor: {
+      ...themeColors,
     },
     borderRadius: {
-      lg: `var(--radius)`,
-      md: `calc(var(--radius) - 2px)`,
-      sm: 'calc(var(--radius) - 4px)',
+      DEFAULT: '10px',
+      sm: '4px',
+      full: '999999px',
     },
   },
 }
 
-export default defineConfig(config) as UserConfig<(typeof config)['theme']>
+export default defineConfig(config as any) as UserConfig<(typeof config)['theme']>
