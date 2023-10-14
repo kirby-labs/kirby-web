@@ -40,7 +40,7 @@ export default function () {
       <div className="px-2 max-w-6xl mx-auto w-full">
         <div className="flex flex-row justify-between items-center">
           <div className="flex flex-row items-center">
-            <img src={LogoImg} alt="" className="h-9 mr-8 self-center border-r border-solid border-divide pr-8" />
+            <img src="/logo.png" alt="" className="h-9 mr-8 self-center border-r border-solid border-divide pr-8" />
             <NavItem path="/" name="Home" icon={<HomeOutlined style={{ fontSize: '18px' }} />} />
             <NavItem path="/users" name="Explore" icon={<GlobalOutlined style={{ fontSize: '18px' }} />} />
             <NavItem path="/feeds" name="Feeds" icon={<AppstoreOutlined style={{ fontSize: '18px' }} />} />
