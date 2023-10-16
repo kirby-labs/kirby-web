@@ -4,8 +4,12 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 
 import { USERS } from '@/constants/users'
+import { useKirby } from '@/hooks/useKirby'
 
 export default function () {
+  const { users } = useKirby()
+  console.log(users)
+
   return (
     <div className="max-w-6xl mx-auto flex flex-row flex-wrap justify-center items-stretch relative">
       {USERS.map((i) => (
