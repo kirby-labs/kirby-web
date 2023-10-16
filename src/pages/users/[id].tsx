@@ -1,39 +1,17 @@
-import { AppstoreAddOutlined } from '@ant-design/icons' // @ts-ignore
-import { shorten } from '@did-network/dapp-sdk' // @ts-ignore
-import { PublicKey } from '@solana/web3.js'
-import { Button, Spin } from 'antd' // @ts-ignore
+import { Spin } from 'antd' // @ts-ignore
 import dayjs from 'dayjs'
 import React from 'react'
 import { useParams } from 'react-router' // @ts-ignore
 import { useNavigate } from 'react-router-dom' // @ts-ignore
 
+import { FeedItem } from '@/components/user/FeedItem'
 import { ProfileCard } from '@/components/user/ProfileCard'
-import { Feed, User } from '@/constants/models'
-import { getAccountRss } from '@/hooks/kirby/getAccountRss'
-import { useKirby } from '@/hooks/useKirby'
+import { useUser } from '@/hooks/useUser'
 
 export default function () {
-  const { program } = useKirby()
   const { id: wallet } = useParams<{ id: string }>()
-  const [user, setUser] = useState<User | null>(null)
-  const [feeds, setFeeds] = useState<Feed[] | null>(null)
   const nav = useNavigate()
-
-  useEffect(() => {
-    if (!wallet || !program) {
-      return
-    }
-    ;(async () => {
-      const items = await getAccountRss(program, new PublicKey(wallet))
-      setUser({
-        wallet,
-        feedsCount: items.length,
-        createdAt: dayjs().format('YYYY-MM-DD'),
-        tags: [],
-      })
-      setFeeds(items)
-    })()
-  }, [program, wallet])
+  const { user, feeds } = useUser(wallet)
 
   if (!user) {
     return (
@@ -65,21 +43,7 @@ export default function () {
             </div>
           </div>
           {feeds?.map((i) => (
-            <div key={i.html} className="px-10 mb-4 pt-5 pb-6 bg-white rounded shadow [&_a]:hover:underline">
-              <div className="flex flex-row justify-between items-center mb-2">
-                <div className="text-lg font-bold">{i.title}</div>
-                <div className="text-text2 text-sm">Last Update: {dayjs().format('YYYY-MM-DD HH:mm')}</div>
-              </div>
-              <div className="text-text1 text-sm">{i.description}</div>
-              <div className="text-text2 text-sm mt-2 flex flex-row justify-between items-center">
-                <a className="underline" href={i.html} target={'_blank'}>
-                  {i.html}
-                </a>
-                <Button className="flex-center" onClick={() => nav(`/feed?url=${i.xml}`)}>
-                  <AppstoreAddOutlined /> RSS
-                </Button>
-              </div>
-            </div>
+            <FeedItem key={i.xml} feed={i} />
           ))}
         </div>
       </div>

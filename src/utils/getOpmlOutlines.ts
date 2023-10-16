@@ -1,6 +1,7 @@
 import { Feed } from '@/constants/models'
 
 export function parseOutlines(xmlString: string) {
+  console.log('xmlString', xmlString)
   const regex = /<outline.+text\s*=\s*"(.*?)".+htmlUrl\s*=\s*"(.*?)".+xmlUrl\s*=\s*"(.*?)"/g
   const outlines: Feed[] = []
 

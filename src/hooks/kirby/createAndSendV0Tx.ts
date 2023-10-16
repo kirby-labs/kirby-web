@@ -20,7 +20,7 @@ export async function createAndSendV0Tx(
   const transaction = new web3.VersionedTransaction(messageV0)
 
   // Step 3 - Sign your transaction with the required `Signers`
-  provider.wallet.signTransaction(transaction).catch(console.error)
+  await provider.wallet.signTransaction(transaction)
   console.log('Transaction Signed')
 
   // Step 4 - Send our v0 transaction to the cluster

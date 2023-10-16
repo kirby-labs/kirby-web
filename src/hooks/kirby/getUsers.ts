@@ -21,6 +21,6 @@ export async function getUsers(program: Program): Promise<User[]> {
       tags: ['Lifestyle', 'Tech', 'News'],
     })
   }
-  users.sort((a, b) => b.feedsCount - a.feedsCount)
+  users.sort((a, b) => (b.feedsCount ?? 0) - (a.feedsCount ?? 0))
   return users
 }

@@ -3,7 +3,7 @@ import { Button, Spin } from 'antd'
 import dayjs from 'dayjs'
 import React from 'react'
 
-import FeedItem from '@/components/user/FeedItem'
+import { FeedItem } from '@/components/user/FeedItem'
 
 // @ts-ignore
 const parser = new RSSParser()

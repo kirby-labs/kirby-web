@@ -1,4 +1,4 @@
-import { UserAddOutlined } from '@ant-design/icons'
+import { AppstoreAddOutlined, UserAddOutlined } from '@ant-design/icons'
 import { shorten } from '@did-network/dapp-sdk'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { Button, Input } from 'antd'
@@ -6,10 +6,18 @@ import dayjs from 'dayjs'
 import React from 'react'
 
 import { User } from '@/constants/models'
+import { useAddFeed } from '@/hooks/useAddFeed'
+import { useFollowUser } from '@/hooks/useFollowUser'
 
 export function ProfileCard({ user }: { user: User }) {
   const { publicKey } = useWallet()
   const isSelf = publicKey?.toString() === user.wallet
+
+  const [title, setTitle] = useState('')
+  const [xml, setXml] = useState('')
+  const addFeed = useAddFeed()
+  const followUser = useFollowUser()
+
   return (
     <div className="flex-col-center px-4 py-4 bg-white rounded shadow w-80 text-center">
       <div className="w-full">
@@ -40,16 +48,27 @@ export function ProfileCard({ user }: { user: User }) {
         </div>
       </div>
       {isSelf ? (
-        <div>
-          <Input />
-          <Button type="primary" onClick={() => console.log(11)} className="w-full">
+        <div className="border-t pt-2">
+          <div className="py-2 text-text1">Add New RSS Feed</div>
+          <Input
+            placeholder="RSS Title"
+            className="mb-2"
+            value={title}
+            onChange={(e: any) => setTitle(e.target.value)}
+          />
+          <Input placeholder="RSS URL" className="mb-2" value={xml} onChange={(e: any) => setXml(e.target.value)} />
+          <Button
+            type="primary"
+            onClick={() => addFeed({ title, xml, html: 'https://' + new URL(xml).hostname })}
+            className="w-full"
+          >
             <div className="flex-center">
-              <UserAddOutlined className="mr-1" /> Add new Feed
+              <AppstoreAddOutlined className="mr-1" /> Add New Feed
             </div>
           </Button>
         </div>
       ) : (
-        <Button type="primary" onClick={() => console.log(11)} className="w-full">
+        <Button type="primary" onClick={() => followUser(user.wallet)} className="w-full">
           <div className="flex-center">
             <UserAddOutlined className="mr-1" /> Subscribe
           </div>

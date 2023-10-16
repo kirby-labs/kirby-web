@@ -7,7 +7,7 @@ export interface Feed {
 
 export interface User {
   wallet: string
-  feedsCount: number
-  createdAt: string
-  tags: string[]
+  feedsCount?: number
+  createdAt?: string
+  tags?: string[]
 }

@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 
-export default function FeedItem({ feed }: { feed: any }) {
+export function FeedItem({ feed }: { feed: any }) {
   return (
     <div className="px-10 mb-4 pt-5 pb-6 bg-white rounded shadow [&_a]:hover:underline">
       <a className="text-lg font-bold" href={feed.link} target="_blank">

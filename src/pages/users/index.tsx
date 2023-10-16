@@ -48,7 +48,7 @@ export default function () {
               </div>
             </div>
             <div className="mb-4 flex flex-row items-center justify-center mt-3 px-6 gap-2">
-              {i.tags.map((tag: any, index: number) => (
+              {i.tags?.map((tag: any, index: number) => (
                 <div key={i.wallet + index} className="px-2 py-1 bg-primary4 text-text1 rounded-sm text-xs">
                   {tag}
                 </div>
