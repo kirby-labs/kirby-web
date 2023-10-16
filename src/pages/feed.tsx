@@ -64,8 +64,8 @@ export default function () {
           </Button>
         </div>
         <div className="flex-1 ml-10">
-          {items?.map((i) => (
-            <div key={i.guid} className="px-10 mb-4 pt-5 pb-6 bg-white rounded shadow [&_a]:hover:underline">
+          {items?.map((i: any, index: number) => (
+            <div key={'item' + index} className="px-10 mb-4 pt-5 pb-6 bg-white rounded shadow [&_a]:hover:underline">
               <a className="text-lg font-bold" href={i.link} target="_blank">
                 {i.title}
               </a>
@@ -83,8 +83,11 @@ export default function () {
                     })
                     .filter((i: any) => i.length <= 12 && i.length > 0)
                     .slice(0, 10)
-                    .map((tag: any) => (
-                      <div key={i.guid + tag} className="px-2 py-1 bg-primary4 text-text1 rounded-sm text-xs">
+                    .map((tag: any, tagIndex: number) => (
+                      <div
+                        key={'item' + index + '-' + tagIndex}
+                        className="px-2 py-1 bg-primary4 text-text1 rounded-sm text-xs"
+                      >
                         {tag}
                       </div>
                     ))}

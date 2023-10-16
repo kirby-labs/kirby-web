@@ -10,10 +10,9 @@ import { FEEDS } from '@/constants/feeds'
 import { USERS } from '@/constants/users'
 
 export default function () {
-  // const { wallet } = useWallet()
-  const { wallet } = USERS[0]
+  const { publicKey } = useWallet()
   const loading = false
-  const user = USERS.find((i) => i.wallet === wallet)
+  const user = USERS.find((i) => i.wallet === publicKey?.toString())
   const nav = useNavigate()
 
   if (loading) {

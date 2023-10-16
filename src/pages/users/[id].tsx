@@ -1,30 +1,45 @@
 import { AppstoreAddOutlined, UserAddOutlined } from '@ant-design/icons' // @ts-ignore
 import { shorten } from '@did-network/dapp-sdk' // @ts-ignore
+import { PublicKey } from '@solana/web3.js'
 import { Button, Spin } from 'antd' // @ts-ignore
 import dayjs from 'dayjs'
 import React from 'react'
 import { useParams } from 'react-router' // @ts-ignore
 import { useNavigate } from 'react-router-dom' // @ts-ignore
 
-import { FEEDS } from '@/constants/feeds'
-import { USERS } from '@/constants/users'
+import { Feed, User } from '@/constants/models'
+import { getAccountRss } from '@/hooks/kirby/getAccountRss'
+import { useKirby } from '@/hooks/useKirby'
 
 export default function () {
+  const { program } = useKirby()
   const { id: wallet } = useParams<{ id: string }>()
-  const loading = false
-  const user = USERS.find((i) => i.wallet === wallet)
+  const [user, setUser] = useState<User | null>(null)
+  const [feeds, setFeeds] = useState<Feed[] | null>(null)
   const nav = useNavigate()
 
-  if (loading) {
+  useEffect(() => {
+    if (!wallet || !program) {
+      return
+    }
+    ;(async () => {
+      const items = await getAccountRss(program, new PublicKey(wallet))
+      setUser({
+        wallet,
+        feedsCount: items.length,
+        createdAt: dayjs().format('YYYY-MM-DD'),
+        tags: [],
+      })
+      setFeeds(items)
+    })()
+  }, [program, wallet])
+
+  if (!user) {
     return (
       <div className="max-w-6xl mx-auto flex flex-row items-center justify-center h-60">
         <Spin spinning={true} />
       </div>
     )
-  }
-
-  if (!user) {
-    return null
   }
 
   return (
@@ -41,7 +56,7 @@ export default function () {
             </div>
             <div className="flex flex-row justify-between">
               <span className="text-text2">Joined From: </span>
-              <span>{dayjs(user.createdAt).format('YYYY-MM-DD HH:mm')}</span>
+              <span>{dayjs(user.createdAt).format('YYYY-MM-DD')}</span>
             </div>
             <div className="flex flex-row justify-between">
               <span className="text-text2">Subscription Fee: </span>
@@ -51,10 +66,10 @@ export default function () {
           <div className="text-sm text-text1 w-full border-t text-left px-4 pt-2">
             <div className="flex flex-row justify-between mb-4 mt-2">
               <div>
-                <span className="font-bold">142</span> <span className="text-text2">Following</span>
+                <span className="font-bold">0</span> <span className="text-text2">Following</span>
               </div>
               <div>
-                <span className="font-bold">1,530</span> <span className="text-text2">Followers</span>
+                <span className="font-bold">0</span> <span className="text-text2">Followers</span>
               </div>
             </div>
           </div>
@@ -81,7 +96,7 @@ export default function () {
               >{`https://solscan.io/account/${user.wallet}`}</a>
             </div>
           </div>
-          {FEEDS.map((i) => (
+          {feeds?.map((i) => (
             <div key={i.html} className="px-10 mb-4 pt-5 pb-6 bg-white rounded shadow [&_a]:hover:underline">
               <div className="flex flex-row justify-between items-center mb-2">
                 <div className="text-lg font-bold">{i.title}</div>

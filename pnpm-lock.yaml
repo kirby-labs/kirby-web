@@ -68,6 +68,9 @@ dependencies:
   dayjs:
     specifier: ^1.11.7
     version: 1.11.7
+  fast-xml-parser:
+    specifier: ^4.3.2
+    version: 4.3.2
   jotai:
     specifier: ^1.13.1
     version: 1.13.1(@babel/core@7.20.12)(react@18.2.0)

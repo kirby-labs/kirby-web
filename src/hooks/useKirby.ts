@@ -3,27 +3,33 @@ import { useAnchorWallet, useConnection, useWallet } from '@solana/wallet-adapte
 import { useState } from 'react'
 
 import { PROGRAM_ID } from '@/constants/kirby'
-import { getAllLoggedInUser } from '@/hooks/kirby/getAllLoggedInUser'
+import { User } from '@/constants/models'
+import { getUsers } from '@/hooks/kirby/getUsers'
 
 import idl from '../assets/idl/kirby.json'
 
 export function useKirby() {
-  const [users, setUsers] = useState<any[]>([])
+  const [users, setUsers] = useState<User[]>()
   const wallet = useAnchorWallet()
   const { publicKey } = useWallet()
   const { connection } = useConnection()
+  const provider = useMemo(
+    () => (wallet ? new AnchorProvider(connection, wallet, {}) : undefined),
+    [connection, wallet]
+  )
+  const program = useMemo(() => (provider ? new Program(idl as Idl, PROGRAM_ID, provider) : undefined), [provider])
 
   useEffect(() => {
-    if (!wallet || !publicKey) {
+    if (!wallet || !publicKey || !program) {
       return
     }
-    const provider = new AnchorProvider(connection, wallet, {})
-    const program = new Program(idl as Idl, PROGRAM_ID, provider)
     ;(async () => {
-      await getAllLoggedInUser(program)
+      const users = await getUsers(program)
+      setUsers(users)
     })()
-  }, [connection, wallet, publicKey])
+  }, [connection, wallet, publicKey, program])
   return {
     users,
+    program,
   }
 }
