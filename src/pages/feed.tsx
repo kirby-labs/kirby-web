@@ -1,7 +1,9 @@
 import { useQuery } from '@did-network/dapp-sdk'
-import { Button, Spin } from 'antd' // @ts-ignore
+import { Button, Spin } from 'antd'
 import dayjs from 'dayjs'
-import React from 'react' // @ts-ignore
+import React from 'react'
+
+import FeedItem from '@/components/user/FeedItem'
 
 // @ts-ignore
 const parser = new RSSParser()
@@ -65,36 +67,7 @@ export default function () {
         </div>
         <div className="flex-1 ml-10">
           {items?.map((i: any, index: number) => (
-            <div key={'item' + index} className="px-10 mb-4 pt-5 pb-6 bg-white rounded shadow [&_a]:hover:underline">
-              <a className="text-lg font-bold" href={i.link} target="_blank">
-                {i.title}
-              </a>
-              <p className="mt-3 text-text1 text-sm">{i.contentSnippet}</p>
-              <div className="flex flex-row justify-between items-center mt-4">
-                <div className="flex justify-start items-center gap-x-3">
-                  {i.categories
-                    ?.map((i: any) => {
-                      if (typeof i === 'string') {
-                        return i
-                      } else if (i['_']) {
-                        return i['_']
-                      }
-                      return ''
-                    })
-                    .filter((i: any) => i.length <= 12 && i.length > 0)
-                    .slice(0, 10)
-                    .map((tag: any, tagIndex: number) => (
-                      <div
-                        key={'item' + index + '-' + tagIndex}
-                        className="px-2 py-1 bg-primary4 text-text1 rounded-sm text-xs"
-                      >
-                        {tag}
-                      </div>
-                    ))}
-                </div>
-                <span className="text-xs text-text2">{dayjs(i.isoDate).format('YYYY-MM-DD HH:mm')}</span>
-              </div>
-            </div>
+            <FeedItem feed={i} key={`feed-${index}`} />
           ))}
         </div>
       </div>

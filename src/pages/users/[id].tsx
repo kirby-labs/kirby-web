@@ -1,4 +1,4 @@
-import { AppstoreAddOutlined, UserAddOutlined } from '@ant-design/icons' // @ts-ignore
+import { AppstoreAddOutlined } from '@ant-design/icons' // @ts-ignore
 import { shorten } from '@did-network/dapp-sdk' // @ts-ignore
 import { PublicKey } from '@solana/web3.js'
 import { Button, Spin } from 'antd' // @ts-ignore
@@ -7,6 +7,7 @@ import React from 'react'
 import { useParams } from 'react-router' // @ts-ignore
 import { useNavigate } from 'react-router-dom' // @ts-ignore
 
+import { ProfileCard } from '@/components/user/ProfileCard'
 import { Feed, User } from '@/constants/models'
 import { getAccountRss } from '@/hooks/kirby/getAccountRss'
 import { useKirby } from '@/hooks/useKirby'
@@ -45,40 +46,7 @@ export default function () {
   return (
     <div className="pb-8">
       <div className="max-w-6xl mx-auto flex flex-row items-start">
-        <div className="flex-col-center px-4 py-4 bg-white rounded shadow w-80 text-center">
-          <div className="w-full">
-            <div className="text-lg text-primary font-bold mb-3">{shorten(user.wallet, 8, 8)}</div>
-          </div>
-          <div className="text-sm text-text1 w-full border-t text-left px-4 py-6 flex flex-col gap-y-1">
-            <div className="flex flex-row justify-between">
-              <span className="text-text2">RSS Feeds: </span>
-              <span>{user.feedsCount}</span>
-            </div>
-            <div className="flex flex-row justify-between">
-              <span className="text-text2">Joined From: </span>
-              <span>{dayjs(user.createdAt).format('YYYY-MM-DD')}</span>
-            </div>
-            <div className="flex flex-row justify-between">
-              <span className="text-text2">Subscription Fee: </span>
-              <span className="">0.1 SOL/Month</span>
-            </div>
-          </div>
-          <div className="text-sm text-text1 w-full border-t text-left px-4 pt-2">
-            <div className="flex flex-row justify-between mb-4 mt-2">
-              <div>
-                <span className="font-bold">0</span> <span className="text-text2">Following</span>
-              </div>
-              <div>
-                <span className="font-bold">0</span> <span className="text-text2">Followers</span>
-              </div>
-            </div>
-          </div>
-          <Button type="primary" onClick={() => console.log(11)} className="w-full">
-            <div className="flex-center">
-              <UserAddOutlined className="mr-1" /> Subscribe
-            </div>
-          </Button>
-        </div>
+        <ProfileCard user={user} />
         <div className="flex-1 ml-10">
           <div className="px-10 mb-4 pt-5 pb-6 bg-white rounded shadow [&_a]:hover:underline">
             <div className="flex flex-row justify-between items-center mb-2">
