@@ -8,6 +8,7 @@ import Icons from 'unplugin-icons/vite'
 import { defineConfig, loadEnv } from 'vite'
 import Checker from 'vite-plugin-checker'
 import EslintPlugin from 'vite-plugin-eslint'
+import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import Pages from 'vite-plugin-pages'
 
 export default defineConfig(({ mode }) => {
@@ -45,6 +46,7 @@ export default defineConfig(({ mode }) => {
       }),
       EslintPlugin(),
       Analyze(),
+      nodePolyfills(),
     ],
     build: {
       commonjsOptions: {
