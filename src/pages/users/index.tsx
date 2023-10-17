@@ -18,7 +18,7 @@ export default function () {
   }
 
   return (
-    <div className="max-w-6xl mx-auto flex flex-row flex-wrap justify-center items-stretch relative">
+    <div className="max-w-6xl mx-auto flex flex-row flex-wrap justify-start items-stretch relative">
       {users.map((i) => (
         <NavLink to={`/users/${i.wallet}`} key={i.wallet} className="w-1/3 p-4">
           <div className="rounded bg-white shadow hover:shadow-lg overflow-hidden text-center py-2">

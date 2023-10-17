@@ -5,6 +5,7 @@ import { useParams } from 'react-router' // @ts-ignore
 import { useNavigate } from 'react-router-dom' // @ts-ignore
 
 import { FeedItem } from '@/components/user/FeedItem'
+import { FeedSource } from '@/components/user/FeedSource'
 import { ProfileCard } from '@/components/user/ProfileCard'
 import { useUser } from '@/hooks/useUser'
 
@@ -43,7 +44,7 @@ export default function () {
             </div>
           </div>
           {feeds?.map((i) => (
-            <FeedItem key={i.xml} feed={i} />
+            <FeedSource key={i.xml} feed={i} />
           ))}
         </div>
       </div>

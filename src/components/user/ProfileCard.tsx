@@ -1,21 +1,21 @@
-import { AppstoreAddOutlined, UserAddOutlined } from '@ant-design/icons'
+import { AppstoreAddOutlined, LoadingOutlined, UserAddOutlined } from '@ant-design/icons'
 import { shorten } from '@did-network/dapp-sdk'
-import { useWallet } from '@solana/wallet-adapter-react'
 import { Button, Input } from 'antd'
 import dayjs from 'dayjs'
 import React from 'react'
+import { useLocation } from 'react-router'
 
 import { User } from '@/constants/models'
 import { useAddFeed } from '@/hooks/useAddFeed'
 import { useFollowUser } from '@/hooks/useFollowUser'
 
 export function ProfileCard({ user }: { user: User }) {
-  const { publicKey } = useWallet()
-  const isSelf = publicKey?.toString() === user.wallet
+  const { pathname } = useLocation()
+  const isProfile = pathname.includes('/profile')
 
   const [title, setTitle] = useState('')
   const [xml, setXml] = useState('')
-  const addFeed = useAddFeed()
+  const { submit: addFeed, loading: addFeedLoading } = useAddFeed()
   const followUser = useFollowUser()
 
   return (
@@ -47,7 +47,7 @@ export function ProfileCard({ user }: { user: User }) {
           </div>
         </div>
       </div>
-      {isSelf ? (
+      {isProfile ? (
         <div className="border-t pt-2">
           <div className="py-2 text-text1">Add New RSS Feed</div>
           <Input
@@ -61,9 +61,11 @@ export function ProfileCard({ user }: { user: User }) {
             type="primary"
             onClick={() => addFeed({ title, xml, html: 'https://' + new URL(xml).hostname })}
             className="w-full"
+            disabled={addFeedLoading || !xml || !title}
           >
             <div className="flex-center">
-              <AppstoreAddOutlined className="mr-1" /> Add New Feed
+              {addFeedLoading ? <LoadingOutlined className="mr-1" /> : <AppstoreAddOutlined className="mr-1" />}
+              Add New Feed
             </div>
           </Button>
         </div>

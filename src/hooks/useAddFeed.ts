@@ -1,6 +1,6 @@
 import { AnchorProvider, BN, Program, web3 } from '@coral-xyz/anchor'
 import { useConnection, useWallet } from '@solana/wallet-adapter-react'
-import { Transaction } from '@solana/web3.js'
+import { PublicKey, Transaction } from '@solana/web3.js'
 
 import { PROGRAM_ID } from '@/constants/kirby'
 import { Feed } from '@/constants/models'
@@ -11,64 +11,56 @@ export function useAddFeed() {
   const { connection } = useConnection()
   const { program } = useKirby()
   const { publicKey, sendTransaction } = useWallet()
+  const [loading, setLoading] = useState(false)
 
-  return useCallback(
-    (feed: Feed) => {
+  const submit = useCallback(
+    (feed: Feed, isDelete: boolean = false) => {
       if (!publicKey || !program) {
         return
       }
       ;(async () => {
-        let [accountSettingAccount] = web3.PublicKey.findProgramAddressSync(
-          [Buffer.from('account-setting'), publicKey.toBuffer()],
-          PROGRAM_ID
-        )
-        const instructions: web3.TransactionInstruction[] = []
+        setLoading(true)
         try {
-          const accountSettingData = await program.account.accountRssSetting.fetch(accountSettingAccount)
-          console.log('accountSettingData: ', accountSettingData)
-        } catch (error) {
-          console.log('accountSettingData not exist, init it')
-          const loginInstructions = await buildLoginInstructions(program)
-          loginInstructions.forEach((i) => instructions.push(i))
-        }
-
-        const feeds = [...(await getAccountRss(program, publicKey)), feed].filter(
-          (obj, index, self) => obj.title.length > 0 && index === self.findIndex((el) => el.xml === obj.xml)
-        )
-        console.log(feeds)
-        instructions.push(
-          await updateItem(
-            program,
-            `
-<opml version="2.0">
-  <head>
-    <title>Your Subscription List</title>
-  </head>
-  <body>
-    ${feeds.map((i) => `<outline text="${i.title}" htmlUrl="${i.html}" xmlUrl="${i.xml}" />`).join('\r\n')}
-    </outline>
-  </body>
-</opml>
-`
+          let [accountSettingAccount] = web3.PublicKey.findProgramAddressSync(
+            [Buffer.from('account-setting'), publicKey.toBuffer()],
+            PROGRAM_ID
           )
-        )
+          const instructions: web3.TransactionInstruction[] = []
+          try {
+            const accountSettingData = await program.account.accountRssSetting.fetch(accountSettingAccount)
+            console.log('accountSettingData: ', accountSettingData)
+          } catch (error) {
+            console.log('accountSettingData not exist, init it')
+            const loginInstructions = await buildLoginInstructions(program)
+            loginInstructions.forEach((i) => instructions.push(i))
+          }
 
-        const {
-          context: { slot: minContextSlot },
-          value: { blockhash, lastValidBlockHeight },
-        } = await connection.getLatestBlockhashAndContext()
+          const newNeedDoc = await buildFeedsXML(program, publicKey, feed, isDelete)
+          instructions.push(await updateItem(program, newNeedDoc))
 
-        const transaction = new Transaction({
-          feePayer: publicKey,
-          recentBlockhash: blockhash,
-        }).add(...instructions)
-        const signature = await sendTransaction(transaction, connection, { minContextSlot })
-        await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature })
-        // await createAndSendV0Tx(instructions, program.provider as any, publicKey)
+          const {
+            context: { slot: minContextSlot },
+            value: { blockhash, lastValidBlockHeight },
+          } = await connection.getLatestBlockhashAndContext()
+
+          const transaction = new Transaction({
+            feePayer: publicKey,
+            recentBlockhash: blockhash,
+          }).add(...instructions)
+          const signature = await sendTransaction(transaction, connection, { minContextSlot })
+          await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature })
+        } finally {
+          setLoading(false)
+        }
       })()
     },
     [connection, program, publicKey, sendTransaction]
   )
+
+  return {
+    loading,
+    submit,
+  }
 }
 
 export async function buildLoginInstructions(program: Program) {
@@ -133,4 +125,22 @@ async function updateItem(program: Program, newDocument: string) {
       user: payer,
     })
     .instruction()
+}
+
+async function buildFeedsXML(program: Program, publicKey: PublicKey, feed: Feed, isDelete: boolean) {
+  const feeds = [...(await getAccountRss(program, publicKey)), feed]
+    .filter((obj, index, self) => index === self.findIndex((el) => el.xml === obj.xml))
+    .filter((i) => i.title.length > 0)
+    .filter((i) => !(isDelete && i.xml === feed.xml))
+  console.log('buildFeedsXML:', feeds)
+  return `
+<opml version="2.0">
+  <head>
+    <title>Your Subscription List</title>
+  </head>
+  <body>
+    ${feeds.map((i) => `<outline text="${i.title}" htmlUrl="${i.html}" xmlUrl="${i.xml}" />`).join('\r\n')}
+  </body>
+</opml>
+`
 }
